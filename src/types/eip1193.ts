@@ -1069,6 +1069,17 @@ export type PublicRpcSchema = [
     ReturnType: TransactionReceipt | null
   },
   /**
+   * @description Returns the receipts of a block specified by hash
+   * @example
+   * provider.request({ method: 'eth_getBlockReceipts', params: ['0x...'] })
+   * // => [{ ... }, { ... }]
+   */
+  {
+    Method: 'eth_getBlockReceipts'
+    Parameters: [hash: Hash]
+    ReturnType: TransactionReceipt[] | null
+  },
+  /**
    * @description Returns information about an uncle specified by block hash and uncle index position
    * @link https://eips.ethereum.org/EIPS/eip-1474
    * @example
@@ -2173,15 +2184,15 @@ export type EIP1193RequestFn<
           { Method: _parameters['method'] }
         >['ReturnType']
     : raw extends true
-      ? OneOf<
-          | {
-              result: unknown
-            }
-          | {
-              error: Rpc.ErrorObject
-            }
-        >
-      : unknown,
+    ? OneOf<
+        | {
+            result: unknown
+          }
+        | {
+            error: Rpc.ErrorObject
+          }
+      >
+    : unknown,
 >(
   args: _parameters,
   options?: EIP1193RequestOptions | undefined,
